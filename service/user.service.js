@@ -1,5 +1,6 @@
 const { Op } = require("sequelize");
 const userdb = require("../models/user");
+const otpdb = require("../models/otp");
 
 const userService = {};
 
@@ -24,4 +25,11 @@ userService.createUser = async (data) => {
   }
 };
 
+userService.createOTP = async (data) => {
+  try {
+    return await otpdb.create(data);
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
 module.exports = userService;

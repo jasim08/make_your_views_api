@@ -43,4 +43,10 @@ const User = sequelize.define(
   }
 );
 
+User.associate = (models) => {
+  User.hasMany(models.OTP, {
+    foreignKey: "userId",
+  });
+};
+
 module.exports = User;
