@@ -17,6 +17,26 @@ userService.findUser = async (data) => {
   }
 };
 
+userService.findOne = async (data) => {
+  try {
+    return await userdb.findOne({
+      where: data,
+    });
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
+userService.getOTP = async (data) => {
+  try {
+    return await otpdb.findOne({
+      where: data,
+    });
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
 userService.createUser = async (data) => {
   try {
     return await userdb.create(data);
@@ -30,6 +50,28 @@ userService.createOTP = async (data) => {
     return await otpdb.create(data);
   } catch (err) {
     throw new Error(err.message);
+  }
+};
+
+userService.updateUserInfo = async (user_id, newData) => {
+  try {
+    const updateUser = await userdb.update(newData, {
+      where: { user_id: user_id },
+      returning: true, // Get the updated user as a result
+    });
+
+    return updateUser;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+userService.deleteOTPbyid = async (id) => {
+  try {
+    return await otpdb.destroy({
+      where: { id: id },
+    });
+  } catch (error) {
+    throw new Error(error.message);
   }
 };
 module.exports = userService;

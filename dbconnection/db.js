@@ -9,7 +9,7 @@ const sequelize = new Sequelize(
     dialect: process.env.DB,
   }
 );
-// sequelize.sync({ force: true });
-sequelize.sync();
+sequelize.sync({ force: false });
+// sequelize.sync();
 
 module.exports = sequelize;
