@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../dbconnection/db");
 const OTP = sequelize.define(
-  "OTP",
+  "otps",
   {
     code: {
       type: DataTypes.STRING,
@@ -18,7 +18,7 @@ const OTP = sequelize.define(
     },
   },
   {
-    timestamps: false, // If you don't want Sequelize to manage createdAt and updatedAt fields
+    timestamps: true, // If you don't want Sequelize to manage createdAt and updatedAt fields
     tableName: "otps",
   }
 );

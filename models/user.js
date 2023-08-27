@@ -28,6 +28,10 @@ const User = sequelize.define(
       type: DataTypes.DATE,
       allowNull: true,
     },
+    points: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
     verified: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
@@ -40,11 +44,15 @@ const User = sequelize.define(
   {
     timestamps: false, // If you don't want Sequelize to manage createdAt and updatedAt fields
     tableName: "users",
+    returning: true, // This enables returning updated data
   }
 );
 
 User.associate = (models) => {
   User.hasMany(models.OTP, {
+    foreignKey: "userId",
+  });
+  User.hasMany(models.sharedlinks, {
     foreignKey: "userId",
   });
 };

@@ -1,7 +1,7 @@
 const { IMAGES } = require("../constant");
 const sendMail = require("../helpers/sendmail");
 const userService = require("../service/user.service");
-const { OTPGenerator, genHash } = require("../utils");
+const { OTPGenerator, genHash, generateAccessToken } = require("../utils");
 const moment = require("moment-timezone");
 const userController = {};
 
@@ -65,13 +65,13 @@ userController.sentEmailOTP = async (req, res, next) => {
     const OTP = OTPGenerator();
     const expiresAt = moment().add(process.env.OTPEXPIRES, "minutes");
     userService.createOTP({ code: OTP, userId: user.user_id, expiresAt });
-    sendMail(
-      "MY Views <" + process.env.GMAIL_ACCOUNT + ">",
-      email,
-      "OTP - Email Verification",
-      "../mailtemplates/verificationMailTemplate.hbs",
-      { name: user.username, OTP: OTP, images: IMAGES }
-    );
+    // sendMail(
+    //   "MY Views <" + process.env.GMAIL_ACCOUNT + ">",
+    //   email,
+    //   "OTP - Email Verification",
+    //   "../mailtemplates/verificationMailTemplate.hbs",
+    //   { name: user.username, OTP: OTP, images: IMAGES }
+    // );
 
     return res.status(200).send({ message: "OTP sent to " + email });
   } catch (err) {
@@ -83,12 +83,13 @@ userController.sentEmailOTP = async (req, res, next) => {
 userController.userVerify = async (req, res, next) => {
   try {
     const { email, otp } = req?.body;
-    const user = await userService.findOne({ email });
+    let user = await userService.findOne({ email });
     if (!user) {
       return res
         .status(404)
         .send({ message: "User not found. SignUp or Login" });
     }
+    console.log(user);
 
     const OTPData = await userService.getOTP({ userId: user.user_id });
     if (!OTPData) {
@@ -104,10 +105,24 @@ userController.userVerify = async (req, res, next) => {
     if (OTPData.code !== otp) {
       return res.status(409).send({ message: "OTP invalid" });
     }
-    await userService.updateUserInfo(user.user_id, { verified: true });
-    await userService.deleteOTPbyid(OTPData.id);
 
-    return res.status(200).send({ message: email + " verified successfully." });
+    userService.updateUserInfo(user.user_id, {
+      verified: 1,
+    });
+
+    await userService.deleteOTPbyid(OTPData.id);
+    user = JSON.parse(JSON.stringify(user));
+    delete user.password_hash;
+    user.access_token = generateAccessToken(
+      {
+        userid: user.user_id,
+        email: user.email,
+      },
+      process.env.JWT_EXPIRE_TIME
+    );
+    return res
+      .status(200)
+      .send({ message: email + " verified successfully.", data: user });
   } catch (err) {
     console.log(err);
     throw new Error(err.message);

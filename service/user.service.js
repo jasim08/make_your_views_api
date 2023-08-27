@@ -31,6 +31,7 @@ userService.getOTP = async (data) => {
   try {
     return await otpdb.findOne({
       where: data,
+      order: [["createdAt", "DESC"]],
     });
   } catch (err) {
     throw new Error(err.message);
