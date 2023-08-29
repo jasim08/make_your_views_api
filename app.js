@@ -22,6 +22,6 @@ db.authenticate()
     console.error("Unable to connect to the database:", error);
   });
 
-app.listen(3000, () => {
-  console.log("APP listening on port 3000");
+app.listen(process.env.PORT, () => {
+  console.log(`APP listening on port ${process.env.PORT}`);
 });
