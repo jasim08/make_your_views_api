@@ -65,13 +65,13 @@ userController.sentEmailOTP = async (req, res, next) => {
     const OTP = OTPGenerator();
     const expiresAt = moment().add(process.env.OTPEXPIRES, "minutes");
     userService.createOTP({ code: OTP, userId: user.user_id, expiresAt });
-    // sendMail(
-    //   "MY Views <" + process.env.GMAIL_ACCOUNT + ">",
-    //   email,
-    //   "OTP - Email Verification",
-    //   "../mailtemplates/verificationMailTemplate.hbs",
-    //   { name: user.username, OTP: OTP, images: IMAGES }
-    // );
+    sendMail(
+      "MY Views <" + process.env.GMAIL_ACCOUNT + ">",
+      email,
+      "OTP - Email Verification",
+      "../mailtemplates/verificationMailTemplate.hbs",
+      { name: user.username, OTP: OTP, images: IMAGES }
+    );
 
     return res.status(200).send({ message: "OTP sent to " + email });
   } catch (err) {
