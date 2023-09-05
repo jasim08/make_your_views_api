@@ -7,6 +7,10 @@ const sharedlinks = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    linkType: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     shortLink: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -14,6 +18,16 @@ const sharedlinks = sequelize.define(
     views: {
       type: DataTypes.INTEGER,
       allowNull: true,
+      default: 0,
+    },
+    preference: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      default: 1,
+    },
+    pointAllocated: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
       default: 0,
     },
 

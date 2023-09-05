@@ -42,6 +42,7 @@ module.exports = {
             next(unAuthorizedResponse);
           }
         }
+
         req.user = user;
 
         next();

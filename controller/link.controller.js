@@ -1,12 +1,29 @@
 const linkService = require("../service/link.service");
 const userService = require("../service/user.service");
 const { encrypt } = require("../utils");
+const { v4: uuidv4 } = require("uuid");
+
+// Generate a UUIDv4
+
+function getLinkType(link) {
+  link = link.toLowerCase();
+  const uniqulink = uuidv4().replaceAll("-", "/");
+  if (link.includes("fb.") || link.includes("facebook.")) {
+    return { linkType: "facebook", shortLink: "FB.com/" + uniqulink };
+  } else if (link.includes("youtube.")) {
+    return { linkType: "youtube", shortLink: "YT.com/" + uniqulink };
+  } else if (link.includes("instagram") || link.includes("instag")) {
+    return { linkType: "instagram", shortLink: "IG.com/" + uniqulink };
+  } else {
+    return { linkType: "link", shortLink: "OT.com/" + uniqulink };
+  }
+}
 
 const linkController = {};
 
 linkController.addNewLink = async (req, res, next) => {
   try {
-    const { link } = req?.body;
+    const { link, preference, pointAllocated } = req?.body;
     const user = req?.user;
 
     const linkExists = await linkService.getLink({
@@ -16,10 +33,14 @@ linkController.addNewLink = async (req, res, next) => {
     if (linkExists) {
       return res.status(409).send({ message: "link already exists" });
     }
+    const links = getLinkType(link);
 
     const createLink = await linkService.createLink({
       userId: user.userid,
       link,
+      preference,
+      pointAllocated,
+      ...links,
     });
 
     if (!createLink) {
@@ -64,6 +85,20 @@ linkController.linkViewed = async (req, res, next) => {
     return res
       .status(200)
       .send({ message: "points added Successfully.", points });
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
+linkController.getRandomLinks = async (req, res, next) => {
+  try {
+    const userid = req.user.userid;
+    console.log(userid);
+    const links = await linkService.getRandomLink(userid, 1);
+
+    return res
+      .status(200)
+      .send({ message: "points added Successfully.", links });
   } catch (err) {
     throw new Error(err.message);
   }

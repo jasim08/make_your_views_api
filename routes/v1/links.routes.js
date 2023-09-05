@@ -3,6 +3,8 @@ const linkController = require("../../controller/link.controller");
 const verifyToken = require("../../middleware/verifyToken");
 const linkRoutes = express.Router();
 
+linkRoutes.get("/", verifyToken.validateToken, linkController.getRandomLinks);
+
 linkRoutes.post("/share", verifyToken.validateToken, linkController.addNewLink);
 linkRoutes.post(
   "/viewed",
