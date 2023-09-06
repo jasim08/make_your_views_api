@@ -96,9 +96,7 @@ linkController.getRandomLinks = async (req, res, next) => {
     console.log(userid);
     const links = await linkService.getRandomLink(userid, 1);
 
-    return res
-      .status(200)
-      .send({ message: "points added Successfully.", links });
+    return res.status(200).send({ message: "Data fetch Successfully.", links });
   } catch (err) {
     throw new Error(err.message);
   }
