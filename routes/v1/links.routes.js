@@ -12,4 +12,6 @@ linkRoutes.post(
   linkController.linkViewed
 );
 
+linkRoutes.get("/mine", verifyToken.validateToken, linkController.getmyLinks);
+
 module.exports = linkRoutes;
