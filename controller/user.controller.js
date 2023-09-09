@@ -129,4 +129,19 @@ userController.userVerify = async (req, res, next) => {
   }
 };
 
+userController.getUser = async (req, res, next) => {
+  try {
+    const { user_id } = req.params;
+    console.log(user_id);
+    const result = await userService.findOne({ user_id: user_id });
+    console.log(result);
+    if (!result) {
+      return res.status(404).send({ message: "user not found" });
+    }
+    return res.status(200).send({ data: result });
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = userController;
