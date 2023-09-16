@@ -26,7 +26,21 @@ userService.findOne = async (data) => {
     throw new Error(err.message);
   }
 };
-
+userService.findOneAndUpdate = async (userId, points) => {
+  try {
+    console.log("userererererer   ", userId, points);
+    const record = await userdb.findOne({ where: { user_id: userId } });
+    console.log(record);
+    if (record) {
+      return await record.update({ points: record.points + points });
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    throw new Error(error.message);
+  }
+};
 userService.getOTP = async (data) => {
   try {
     return await otpdb.findOne({

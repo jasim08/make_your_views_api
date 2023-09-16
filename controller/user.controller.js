@@ -143,5 +143,19 @@ userController.getUser = async (req, res, next) => {
     next(err);
   }
 };
-
+userController.adviewPointsUpdate = async (req, res, next) => {
+  try {
+    const { userid } = req.user;
+    const { points } = req.body;
+    console.log(userid);
+    const result = await userService.findOneAndUpdate(userid, points);
+    console.log(result);
+    if (!result) {
+      return res.status(404).send({ message: "user not found" });
+    }
+    return res.status(200).send({ data: result });
+  } catch (err) {
+    next(err);
+  }
+};
 module.exports = userController;
