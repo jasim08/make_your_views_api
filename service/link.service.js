@@ -46,12 +46,49 @@ linkService.getRandomLink = async (userid, preferenceValue) => {
       where: {
         preference: preferenceValue,
         pointAllocated: { [Sequelize.Op.gte]: 5 },
-        userId: userid,
       },
       order: Sequelize.literal("RAND()"), // Order by random
-      limit: 20,
+      limit: 15,
     });
   } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
+linkService.getmyLinks = async (userid, pageNumber, size) => {
+  try {
+    const pageSize = size;
+    const offset = (pageNumber - 1) * pageSize;
+
+    const dataQuery = {
+      where: {
+        userId: userid,
+      },
+      order: [["views", "DESC"]],
+      limit: Number(pageSize),
+      offset: (pageNumber - 1) * pageSize,
+    };
+
+    // Next, create a query to retrieve the count of records
+    const countQuery = {
+      where: {
+        userId: userid,
+      },
+      attributes: [[Sequelize.fn("COUNT", Sequelize.col("*")), "count"]],
+    };
+
+    // Now, execute both queries in parallel using Promise.all
+    const result = await Promise.all([
+      linkdb.findAll(dataQuery),
+      linkdb.findOne(countQuery),
+    ]);
+
+    return {
+      data: result[0],
+      count: result[1].dataValues.count,
+    };
+  } catch (err) {
+    console.log(err);
     throw new Error(err.message);
   }
 };
