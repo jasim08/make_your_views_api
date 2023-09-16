@@ -1,7 +1,6 @@
 const IMAGES = {
-  logo: "https://helperscript.com/helperscript/img/helperscript_logo.png",
-  mailIcon:
-    "https://helperscript.com/helperscript/img/helperscript_short_logo_1.png",
+  logo: "https://62.72.59.67:3200/images/MYV_ICONS.png",
+  mailIcon: "https://62.72.59.67:3200/images/mailIcon.png",
 };
 
 module.exports = {
