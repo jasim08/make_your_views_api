@@ -11,6 +11,12 @@ userRoutes.post(
   verifyToken.validateToken,
   userController.adviewPointsUpdate
 );
+
+userRoutes.post(
+  "/subtractviewpoints",
+  verifyToken.validateToken,
+  userController.subtractviewpointsUpdate
+);
 userRoutes.get("/:user_id", verifyToken.validateToken, userController.getUser);
 
 module.exports = userRoutes;

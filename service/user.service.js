@@ -26,13 +26,19 @@ userService.findOne = async (data) => {
     throw new Error(err.message);
   }
 };
-userService.findOneAndUpdate = async (userId, points) => {
+userService.findOneAndUpdatePoints = async (userId, points, action) => {
   try {
     console.log("userererererer   ", userId, points);
     const record = await userdb.findOne({ where: { user_id: userId } });
     console.log(record);
     if (record) {
-      return await record.update({ points: record.points + points });
+      let actionpoints = record.points;
+      if (action == "sub") {
+        actionpoints -= points;
+      } else {
+        actionpoints += points;
+      }
+      return await record.update({ points: actionpoints });
     } else {
       return null;
     }

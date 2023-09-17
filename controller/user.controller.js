@@ -148,7 +148,32 @@ userController.adviewPointsUpdate = async (req, res, next) => {
     const { userid } = req.user;
     const { points } = req.body;
     console.log(userid);
-    const result = await userService.findOneAndUpdate(userid, points);
+    const result = await userService.findOneAndUpdatePoints(
+      userid,
+      points,
+      "add"
+    );
+    console.log(result);
+    if (!result) {
+      return res.status(404).send({ message: "user not found" });
+    }
+    return res.status(200).send({ data: result });
+  } catch (err) {
+    next(err);
+  }
+};
+
+userController.subtractviewpointsUpdate = async (req, res, next) => {
+  try {
+    const { userid } = req.user;
+    const { points } = req.body;
+    console.log(userid);
+
+    const result = await userService.findOneAndUpdatePoints(
+      userid,
+      points,
+      "sub"
+    );
     console.log(result);
     if (!result) {
       return res.status(404).send({ message: "user not found" });
