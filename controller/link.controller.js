@@ -41,6 +41,7 @@ linkController.addNewLink = async (req, res, next) => {
       link,
       preference,
       pointAllocated,
+      views: 0,
       ...links,
     });
 

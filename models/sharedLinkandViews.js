@@ -17,7 +17,7 @@ const sharedlinks = sequelize.define(
     },
     views: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: false,
       default: 0,
     },
     preference: {
