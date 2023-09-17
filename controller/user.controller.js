@@ -59,6 +59,7 @@ userController.sentEmailOTP = async (req, res, next) => {
         username: email.split("@")[0],
         email,
         password_hash: genHash("password" + this.username + email),
+        points: 100,
       };
       user = await userService.createUser(data);
     }
