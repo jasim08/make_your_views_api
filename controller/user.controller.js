@@ -64,7 +64,7 @@ userController.sentEmailOTP = async (req, res, next) => {
       user = await userService.createUser(data);
     }
     let OTP;
-    if (email.toLowercase() == "googleTester123@gmail.com") {
+    if (email.toLowercase() == "googleTester123@myvtest.com") {
       OTP = 1111;
     } else {
       OTP = OTPGenerator();
