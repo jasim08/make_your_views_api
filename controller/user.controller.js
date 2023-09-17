@@ -53,11 +53,11 @@ userController.signUp = async (req, res, next) => {
 userController.sentEmailOTP = async (req, res, next) => {
   try {
     const { email } = req?.body;
-    let user = await userService.findOne({ email });
+    let user = await userService.findOne({ email: email.toLowerCase() });
     if (!user) {
       const data = {
         username: email.split("@")[0],
-        email,
+        email: email.toLowerCase(),
         password_hash: genHash("password" + this.username + email),
         points: 100,
       };
@@ -90,7 +90,7 @@ userController.sentEmailOTP = async (req, res, next) => {
 userController.userVerify = async (req, res, next) => {
   try {
     const { email, otp } = req?.body;
-    let user = await userService.findOne({ email });
+    let user = await userService.findOne({ email: email.toLowerCase() });
     if (!user) {
       return res
         .status(404)
