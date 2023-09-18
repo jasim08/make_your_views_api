@@ -59,7 +59,7 @@ userController.sentEmailOTP = async (req, res, next) => {
         username: email.split("@")[0],
         email: email.toLowerCase(),
         password_hash: genHash("password" + this.username + email),
-        points: 100,
+        points: 10,
       };
       user = await userService.createUser(data);
     }
@@ -120,6 +120,7 @@ userController.userVerify = async (req, res, next) => {
     await userService.deleteOTPbyid(OTPData.id);
     user = JSON.parse(JSON.stringify(user));
     delete user.password_hash;
+
     user.access_token = generateAccessToken(
       {
         userid: user.user_id,
