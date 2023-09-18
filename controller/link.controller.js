@@ -11,10 +11,24 @@ function getLinkType(link) {
   const uniqulink = uuidv4().replaceAll("-", "/");
   if (link.includes("fb.") || link.includes("facebook.")) {
     return { linkType: "facebook", shortLink: "FB.com/" + uniqulink };
-  } else if (link.includes("youtube.")) {
+  } else if (link.includes("youtube.") || link.includes("youtu.be")) {
     return { linkType: "youtube", shortLink: "YT.com/" + uniqulink };
   } else if (link.includes("instagram") || link.includes("instag")) {
     return { linkType: "instagram", shortLink: "IG.com/" + uniqulink };
+  } else if (link.includes("snapchat")) {
+    return { linkType: "snapchat", shortLink: "SC.com/" + uniqulink };
+  } else if (link.includes("twitter")) {
+    return { linkType: "twitter", shortLink: "TW.com/" + uniqulink };
+  } else if (link.includes("spotify")) {
+    return { linkType: "spotify", shortLink: "SP.com/" + uniqulink };
+  } else if (link.includes("linked")) {
+    return { linkType: "linkedIn", shortLink: "LI.com/" + uniqulink };
+  } else if (
+    link.includes("tik-tok") ||
+    link.includes("tiktok") ||
+    (link.includes("tik") && link.includes("tok"))
+  ) {
+    return { linkType: "tik-tok", shortLink: "TT.com/" + uniqulink };
   } else {
     return { linkType: "link", shortLink: "OT.com/" + uniqulink };
   }
