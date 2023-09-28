@@ -4,6 +4,21 @@ const otpdb = require("../models/otp");
 
 const userService = {};
 
+userService.findOTPIsExpired = async (userId) => {
+  try {
+    const currentTimestamp = new Date();
+    return await otpdb.findOne({
+      where: {
+        userId: userId,
+        expiresAt: {
+          [Op.gte]: currentTimestamp,
+        },
+      },
+    });
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
 userService.findUser = async (data) => {
   try {
     const query = {

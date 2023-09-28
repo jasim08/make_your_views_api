@@ -18,5 +18,10 @@ userRoutes.post(
   userController.subtractviewpointsUpdate
 );
 userRoutes.get("/:user_id", verifyToken.validateToken, userController.getUser);
+userRoutes.get(
+  "/otpcheck/:userId",
+  verifyToken.validateToken,
+  userController.getOTPExpireStatus
+);
 
 module.exports = userRoutes;

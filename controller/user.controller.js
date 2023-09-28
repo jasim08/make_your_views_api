@@ -80,7 +80,9 @@ userController.sentEmailOTP = async (req, res, next) => {
       { name: user.username, OTP: OTP, images: IMAGES }
     );
 
-    return res.status(200).send({ message: "OTP sent to " + email });
+    return res
+      .status(200)
+      .send({ userId: user.user_id, message: "OTP sent to " + email });
   } catch (err) {
     console.log(err);
     throw new Error(err.message);
@@ -191,4 +193,16 @@ userController.subtractviewpointsUpdate = async (req, res, next) => {
     next(err);
   }
 };
+
+userController.getOTPExpireStatus = async (req, res, next) => {
+  try {
+    const { userId } = req?.params;
+    const result = await userService.findOTPIsExpired(userId);
+    if (!result) {
+      res.status(404).send({ message: "No OTP found." });
+    }
+    res.status(200).send({ message: "OTP not expired." });
+  } catch (err) {}
+};
+
 module.exports = userController;
