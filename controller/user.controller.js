@@ -211,7 +211,7 @@ userController.checkversiongloabl = async (req, res, next) => {
       needversioncheck: 1,
       playstoreURL:
         "https://play.google.com/store/apps/details?id=com.helperscript.myv",
-      buildNumber: 2,
+      buildNumber: 5,
       admob: 1,
     });
   } catch (err) {
