@@ -205,4 +205,18 @@ userController.getOTPExpireStatus = async (req, res, next) => {
   } catch (err) {}
 };
 
+userController.checkversiongloabl = async (req, res, next) => {
+  try {
+    return res.status(200).json({
+      needversioncheck: 1,
+      playstoreURL:
+        "https://play.google.com/store/apps/details?id=com.helperscript.myv",
+      buildNumber: 2,
+      admob: 1,
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = userController;

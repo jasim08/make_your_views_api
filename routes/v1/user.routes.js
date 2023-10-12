@@ -24,4 +24,6 @@ userRoutes.get(
   userController.getOTPExpireStatus
 );
 
+userRoutes.get("/checkversion/new", userController.checkversiongloabl);
+
 module.exports = userRoutes;
